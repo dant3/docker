@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 
-MAINTAINER Viacheslav Blinovi "vyacheslav.blinov@gmail.com"
+MAINTAINER Viacheslav Blinov "vyacheslav.blinov@gmail.com"
 
 # Install java8
 RUN apt-get install -y software-properties-common && add-apt-repository -y ppa:webupd8team/java && apt-get update
