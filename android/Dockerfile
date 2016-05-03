@@ -1,42 +1,63 @@
-FROM ubuntu:14.04
+FROM java:openjdk-8-jdk
 
-MAINTAINER Viacheslav Blinov "vyacheslav.blinov@gmail.com"
+MAINTAINER Viacheslav Blinov "blinov.vyacheslav@gmail.com"
 
-# Install java8
-RUN apt-get install -y software-properties-common && add-apt-repository -y ppa:webupd8team/java && apt-get update
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN apt-get install -y oracle-java8-installer
+# Installs i386 architecture required for running 32 bit Android tools
+# rm -rf /var/lib/apt/lists/* && \
+RUN dpkg --add-architecture i386 && \
+    apt-get update -y && \
+    apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 expect && \
+    apt-get autoremove -y && \
+    apt-get clean
 
-# Install Deps
-RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl
 
-# Install Android SDK
-RUN cd /opt && wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_r24.3.4-linux.tgz && tar xzf android-sdk.tgz && rm -f android-sdk.tgz && chown -R root.root android-sdk-linux
-
-# Setup environment
-ENV ANDROID_HOME /opt/android-sdk-linux
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-
-# Install sdk elements
+# Install android sdk related tools
 COPY tools /opt/tools
 ENV PATH ${PATH}:/opt/tools
-RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk --all --no-ui --filter platform-tools,tools,build-tools-23.0.2,build-tools-23.0.1,build-tools-22.0.1,build-tools-21.1,build-tools-21.1.1,build-tools-21.1.2,build-tools-22,android-21,android-22,android-23,extra-android-support,extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services"]
 
-RUN which adb
+ENV ANDROID_SDK_VERSION r24.4.1
+ENV ANDROID_BUILD_TOOLS_VERSION 23.0.3
+ENV ANDROID_HOME /opt/android-sdk-linux
+
+# Install Android SDK
+# chown -R root.root android-sdk-linux && \
+RUN cd /opt && \
+    wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_${ANDROID_SDK_VERSION}-linux.tgz && \
+    tar xzf android-sdk.tgz && \
+    rm -f android-sdk.tgz && \
+    android-accept-licenses.sh $ANDROID_HOME/tools/android update sdk --all --no-ui --filter tools
+
+# Setup environment
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
+# Check installation
 RUN which android
 
-# TODO: Create emulator for tests
-# RUN echo "no" | android create avd \
-#                --force \
-#                --device "Nexus 5" \
-#                --name test \
-#                --target android-21 \
-#                --abi armeabi-v7a \
-#                --skin WVGA800 \
-#                --sdcard 512M
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter platform-tools
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-${ANDROID_BUILD_TOOLS_VERSION}
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter extra-android-support
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter extra-android-m2repository
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter extra-google-m2repository
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter extra-google-google_play_services
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter android-23
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter sys-img-x86-android-23
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter ndk-bundle
 
-# Cleaning
-RUN apt-get clean
+# create emulator to run tests:
+# RUN echo "no" | android create avd \
+#                 --force \
+#                 --device "Nexus 5" \
+#                 --name test \
+#                 --target android-23 \
+#                 --abi x86 \
+#                 --skin WVGA800 \
+#                 --sdcard 512M
+
+# start this emulator:
+# RUN emulator -avd test && /opt/tools/android-wait-emulator.sh
+
+# Check android sdk packages installation
+RUN which adb
 
 # GO to workspace
 RUN mkdir -p /opt/workspace
