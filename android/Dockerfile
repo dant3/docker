@@ -16,7 +16,6 @@ COPY tools /opt/tools
 ENV PATH ${PATH}:/opt/tools
 
 ENV ANDROID_SDK_VERSION r24.4.1
-ENV ANDROID_BUILD_TOOLS_VERSION 23.0.3
 ENV ANDROID_HOME /opt/android-sdk-linux
 
 # Install Android SDK
@@ -25,6 +24,7 @@ RUN cd /opt && \
     wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_${ANDROID_SDK_VERSION}-linux.tgz && \
     tar xzf android-sdk.tgz && \
     rm -f android-sdk.tgz && \
+    android-accept-licenses.sh $ANDROID_HOME/tools/android update sdk --all --no-ui --filter tools && \
     android-accept-licenses.sh $ANDROID_HOME/tools/android update sdk --all --no-ui --filter tools
 
 # Setup environment
@@ -34,12 +34,15 @@ ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 RUN which android
 
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter platform-tools
-RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-${ANDROID_BUILD_TOOLS_VERSION}
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter extra-android-support
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter extra-android-m2repository
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter extra-google-m2repository
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter extra-google-google_play_services
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter android-23
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter android-22
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-23.0.3
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-23.0.1
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-22.0.1
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter sys-img-x86-android-23
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter ndk-bundle
 
