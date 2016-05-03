@@ -45,6 +45,7 @@ RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --fil
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-22.0.1
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter sys-img-x86-android-23
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter ndk-bundle
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter sys-img-armeabi-v7a-android-23
 
 # create emulator to run tests:
 # RUN echo "no" | android create avd \
