@@ -40,6 +40,8 @@ RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --fil
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter extra-google-google_play_services
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter android-23
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter android-22
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-25.0.2
+RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-25.0.3
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-23.0.3
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-23.0.1
 RUN /opt/tools/android-accept-licenses.sh android update sdk --all --no-ui --filter build-tools-22.0.1
