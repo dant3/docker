@@ -45,7 +45,7 @@ RUN $YESS sdkmanager "build-tools;23.0.1"
 RUN $YESS sdkmanager "build-tools;22.0.1"
 RUN $YESS sdkmanager "system-images;android-23;default;x86"
 RUN $YESS sdkmanager "emulator"
-RUN $YESS sdkmanager "ndk-bundle"
+#RUN $YESS sdkmanager "ndk-bundle"
 RUN $YESS sdkmanager "extras;intel;"
 RUN $YESS sdkmanager --licenses
 
