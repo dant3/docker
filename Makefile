@@ -1,7 +1,7 @@
 .PHONY: android java8
 
 android:
-	docker build ./android
+	docker build -t android ./android
 
 java8:
-	docker build ./java8
+	docker build -t java8 ./java8
