@@ -47,7 +47,6 @@ RUN $YESS sdkmanager "system-images;android-23;default;x86"
 RUN $YESS sdkmanager "emulator"
 RUN $YESS sdkmanager "ndk-bundle"
 RUN $YESS sdkmanager "extras;intel;"
-RUN $YESS sdkmanager sys-img-armeabi-v7a-android-23
 RUN $YESS sdkmanager --licenses
 
 # create emulator to run tests:
