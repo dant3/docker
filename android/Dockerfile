@@ -52,6 +52,7 @@ RUN $YESS sdkmanager "build-tools;25.0.3"
 RUN $YESS sdkmanager "build-tools;26.0.2"
 RUN $YESS sdkmanager "build-tools;27.0.3"
 RUN $YESS sdkmanager "build-tools;28.0.2"
+RUN $YESS sdkmanager "platforms;android-28"
 RUN $YESS sdkmanager --licenses
 
 # create emulator to run tests:
