@@ -5,4 +5,6 @@ MAINTAINER Viacheslav Blinov "blinov.vyacheslav@gmail.com"
 # 0. update repositories
 RUN apt-get update
 # 1. install tools
-RUN apt-get install -y openjdk-8-jdk software-properties-common build-essential make curl wget rpm zip git maven
+RUN apt-get install -y openjdk-8-jdk software-properties-common build-essential make curl wget rpm zip git
+# 2. install java-dependant tools
+RUN apt-get install -y maven
