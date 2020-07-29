@@ -1,4 +1,4 @@
-FROM java:openjdk-8-jdk
+FROM openjdk:8-jdk-buster
 
 MAINTAINER Viacheslav Blinov "blinov.vyacheslav@gmail.com"
 
