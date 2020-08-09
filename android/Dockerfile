@@ -1,4 +1,7 @@
-FROM openjdk:8-jdk-buster
+# Android SDK is completely disfunctional on jdk 11 at this point of time
+# uncomment this if a mirracle would happen ever
+#FROM openjdk:11.0.8-jdk-buster
+FROM openjdk:9-jdk
 
 MAINTAINER Viacheslav Blinov "blinov.vyacheslav@gmail.com"
 
@@ -10,6 +13,10 @@ RUN dpkg --add-architecture i386 && \
     apt-get autoremove -y && \
     apt-get clean
 
+# This is a workaround for android-sdk not working properly with Java 9,10
+# Note that jdk 11 does not have this module anymore -- Google knew this would happen since 2017
+# but they don't give a shit about that
+ENV JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 
 # Install android sdk related tools
 COPY tools /opt/tools
