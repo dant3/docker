@@ -78,23 +78,10 @@ RUN dpkg --add-architecture i386 && \
     apt-get autoremove -y && \
     apt-get clean
 
-# This is a workaround for android-sdk not working properly with Java 9,10
-# Note that jdk 11 does not have this module anymore -- Google knew this would happen since 2017
-# but they don't give a shit about that
-ENV JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
-
-# Install android sdk related tools
-COPY tools /opt/tools
-ENV PATH ${PATH}:/opt/tools
-
-ENV YESS /opt/tools/android-accept-licenses.sh
-ENV ANDROID_SDK_URL https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip
 ENV ANDROID_HOME /opt/android-sdk-linux
-ENV CMDLINE_TOOLS $ANDROID_HOME/cmdline-tools
 
 # Setup environment
-ENV PATH ${PATH}:$CMDLINE_TOOLS/latest/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools/bin
-ENV SDKMANAGER=$CMDLINE_TOOLS/latest/bin/sdkmanager
+ENV PATH ${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools/bin
 
 COPY --from=staging $ANDROID_HOME $ANDROID_HOME
 
