@@ -5,3 +5,6 @@ android:
 
 java8:
 	docker build -t dant3/java8 ./java8
+
+docbuilder:
+	docker build -t dant3/docbuilder ./docbuilder
